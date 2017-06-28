@@ -62440,7 +62440,8 @@ const cozyFields = JSON.parse(process.env.COZY_FIELDS)
 konnector.fetch({account: cozyFields.account, folderPath: cozyFields.folder_to_save}, err => {
   log('debug', 'The konnector has been run')
   if (err) {
-    log('error', err)
+    console.log(err, err)
+    log('error', err.message || err)
     process.exit(1)
   }
 })
