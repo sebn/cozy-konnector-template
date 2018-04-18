@@ -1,15 +1,21 @@
 {
   "version": "1.0.0",
-  "name": "Connector template",
+  "name": "Pajemploi",
   "type": "konnector",
   "language": "node",
-  "icon": "icon.png",
-  "slug": "template-collect",
-  "source": "git://github.com/konnectors/cozy-konnector-template.git",
-  "editor": "Your name",
-  "vendorLink": "Link to the target website",
-  "categories": ["other"],
+  "icon": "icon.gif",
+  "slug": "pajemploi-collect",
+  "source": "git://github.com/konnectors/cozy-konnector-pajemploi.git",
+  "editor": "Cozy",
+  "vendorLink": "http://www.pajemploi.urssaf.fr/pajewebinfo/cms/sites/pajewebinfo/accueil.html",
+  "categories": ["public_service"],
   "fields": {
+    "login": {
+      "type": "text"
+    },
+    "password": {
+      "type": "password"
+    },
     "advancedFields": {
       "folderPath": {
         "advanced": true,
@@ -18,9 +24,8 @@
     }
   },
   "dataType": [
-    "bill"
+    "document"
   ],
-  "screenshots": [ "screenshots/screenshot1.png" ],
   "permissions": {
     "books": {
       "type": "io.cozy.books"
@@ -34,35 +39,30 @@
     }
   },
   "developer": {
-    "name": "Cozy",
-    "url": "https://cozy.io"
+    "name": "Sébastien Nicouleau",
+    "url": ""
   },
-  "langs": ["fr", "en"],
+  "screenshots": ["screenshots/screenshot.png"],
+  "langs": ["fr"],
   "locales": {
     "fr": {
-      "short_description": "Template de connecteur",
-      "long_description": "Ce template récupère une liste de livres sur un site de scraping",
+      "short_description": "Récupérer vos documents Pajemploi",
+      "long_description": "Récupérer vos documents Pajemploi",
       "permissions": {
-        "books": {
-          "description": "Utilisé pour sauvegarder les références des livres"
-        },
         "files": {
-          "description": "Utilisé pour sauvegarder les factures"
+          "description": "Utilisé pour sauvegarder vos factures"
         },
         "accounts": {
-          "description": "Utilisé pour obtenir les données du compte"
+          "description": "Utilisé pour récupérer les informations de votre compte"
         }
       }
     },
     "en": {
-      "short_description": "Connector template",
-      "long_description": "This template fetches a list of books from a scraping website",
+      "short_description": "Fetch your Pajemploi documents",
+      "long_description": "Fetch your Pajemploi documents",
       "permissions": {
-        "books": {
-          "description": "Required to save books references"
-        },
         "files": {
-          "description": "Required to save the bills"
+          "description": "Required to save the file documents"
         },
         "accounts": {
           "description": "Required to get the account's data"
