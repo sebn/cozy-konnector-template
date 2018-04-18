@@ -1,13 +1,13 @@
 {
-  "name": "cozy-konnector-pajemploi",
+  "name": "cozy-konnector-template",
   "version": "1.0.0",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/konnectors/cozy-konnector-pajemploi.git"
+    "url": "git+https://github.com/konnectors/cozy-konnector-template.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cozy Cloud",
   "license": "AGPL-3.0",
   "main": "./src/index.js",
   "eslintConfig": {
@@ -31,9 +31,7 @@
     "cozyPublish": "cozy-app-publish --token $REGISTRY_TOKEN --build-commit $(git rev-parse ${DEPLOY_BRANCH:-build})"
   },
   "dependencies": {
-    "cozy-konnector-libs": "4.1.7",
-    "lodash.groupby": "4.6.0",
-    "lodash.map": "4.6.0"
+    "cozy-konnector-libs": "4.1.7"
   },
   "devDependencies": {
     "copy-webpack-plugin": "4.5.1",
