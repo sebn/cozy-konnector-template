@@ -1,13 +1,13 @@
 {
   "version": "1.0.0",
-  "name": "Booking.com",
+  "name": "Connector template",
   "type": "konnector",
   "language": "node",
-  "icon": "icon.svg",
-  "slug": "bookingdotcom",
-  "source": "git://github.com/konnectors/booking.com.git",
+  "icon": "icon.png",
+  "slug": "template",
+  "source": "git://github.com/konnectors/cozy-konnector-template.git",
   "editor": "Cozy",
-  "vendor_link": "http://secure.booking.com/myreservations.html",
+  "vendor_link": "Link to the target website",
   "categories": ["other"],
   "fields": {
     "advancedFields": {
@@ -20,13 +20,10 @@
   "data_types": [
     "bill"
   ],
-  "screenshots": [],
+  "screenshots": [ "screenshots/screenshot1.png" ],
   "permissions": {
-    "bank operations": {
-      "type": "io.cozy.bank.operations"
-    },
-    "bills": {
-      "type": "io.cozy.bills"
+    "books": {
+      "type": "io.cozy.books"
     },
     "files": {
       "type": "io.cozy.files"
@@ -43,35 +40,29 @@
   "langs": ["fr", "en"],
   "locales": {
     "fr": {
-      "short_description": "Récupère vos réservations booking.com",
-      "long_description": "Récupère vos réservations booking.com",
+      "short_description": "Template de connecteur",
+      "long_description": "Ce template récupère une liste de livres sur un site de scraping",
       "permissions": {
-        "bank operations": {
-          "description": "Utilisé pour relier les factures à des operations bancaires"
-        },
-        "bills": {
-          "description": "Utilisé pour sauver les données des factures"
+        "books": {
+          "description": "Utilisé pour sauvegarder les références des livres"
         },
         "files": {
           "description": "Utilisé pour sauvegarder les factures"
         },
         "accounts": {
-          "description": "Utilisé pour récupérer les informations de votre compte"
+          "description": "Utilisé pour obtenir les données du compte"
         }
       }
     },
     "en": {
-      "short_description": "Fetch your bookings from booking.com",
-      "long_description": "Fetch your bookings from booking.com",
+      "short_description": "Connector template",
+      "long_description": "This template fetches a list of books from a scraping website",
       "permissions": {
-        "bank operations": {
-          "description": "Required to link bank operations to bills"
-        },
-        "bills": {
-          "description": "Required to save the bills data"
+        "books": {
+          "description": "Required to save books references"
         },
         "files": {
-          "description": "Required to save the file documents"
+          "description": "Required to save the bills"
         },
         "accounts": {
           "description": "Required to get the account's data"
