@@ -1,21 +1,46 @@
-[Cozy][cozy] Konnector Orange
-=============================
+# [Cozy][cozy] cozy-konnector-facebook
 
-What's Cozy?
-------------
+## What's Cozy?
 
 ![Cozy Logo](https://cdn.rawgit.com/cozy/cozy-guidelines/master/templates/cozy_logo_small.svg)
 
 [Cozy] is a platform that brings all your web services in the same private space. With it, your webapps and your devices can share data easily, providing you with a new experience. You can install Cozy on your own hardware where no one's tracking you.
 
-What's this new konnector?
---------------------------
+## What's this new konnector?
 
-Download all your Orange Bills.
+This konnector let you import your facebook images.
 
-### Open a Pull-Request
+## Open a Pull-Request
 
 If you want to work on this konnector and submit code modifications, feel free to open pull-requests! See the [contributing guide][contribute] for more information about how to properly open pull-requests.
+
+## How to use
+
+### Cozy-konnector-libs
+
+This connector uses [cozy-konnector-libs](https://github.com/cozy/cozy-konnector-libs). You can
+find more documentation about it there.
+
+### Facebook OAuth2
+
+As we need to generate a facebook OAuth2 token, we need a `CLIENT_ID` and `CLIENT_SECRET`. You can find these pieces of information by going to the [Facebook for developers page](https://developers.facebook.com/), clicking your project --> Parameters --> General.
+Once acquired, fill the [keys.json](./keys.json) file.
+
+To configure the konnector, you can edit `./konnector-dev-config.json` with the following:
+
+```
+{
+  "COZY_URL": "http://cozy.tools:8080",
+  "fields": {
+    "access_token": <ACCESS_TOKEN>,
+    "refresh_token": <REFRESH_TOKEN>
+  }
+}
+```
+
+To help you fill this file, you can run `yarn token`, it will help you generate a new `access_token`.
+(This token will be stored in `~/.config/configStore/cozy-konnector-facebook.json`, and you can reset a new token with
+`yarn token --reset`).
 
 ### Test the connector without an accessible cozy-stack
 
@@ -23,7 +48,7 @@ If you just want to test this connector without any cozy available.
 
 You first need an installed [nodejs] (LTS version is fine).
 
-We also suggest you tu use [yarn] instead of npm for node packages.
+And the last version of yarn :
 
 ```sh
 npm install --global yarn
@@ -38,7 +63,7 @@ yarn standalone
 
 The requests to the cozy-stack will be stubbed using the [./fixture.json] file as source of data
 and when cozy-client is asked to create or update data, the data will be output to the console.
-The bills (or any file) will be saved in the root directory.
+The bills (or any file) will be saved in the . directory.
 
 ### Run the connector linked to a cozy-stack
 
@@ -55,17 +80,54 @@ the cozy-stack is supposed to be located in http://cozy.tools:8080. If this is n
 update the COZY_URL field in [./konnector-dev-config.json].
 
 After that, your konnector is running but should not work since you did not specify any credentials to
-the target service. You can do this in [./konnector-dev-config.json] in the fields attribute
+the target service. You can do this also in [./konnector-dev-config.json] in the "fields"
+attribute.
 
 Now run `yarn dev` one more time, it should be ok.
 
 The files are saved in the root directory of your cozy by default.
 
+:warning: To register the `client_id`, `client_secret`, `auth_endpoint`, `token_endpoint`, `grant_mode` and `redirect_uri` to your stack, see https://github.com/cozy/cozy-stack/blob/master/docs/account_types.md#facebook
+
+### Use the konnector with cozy-collect
+
+To setup and run a konnector, Cozy provides a web application called `cozy-collect`.
+
+Then you'll have to register the konnector's oauth system into the cozy-stack's server with the following (see it on [cozy/cozy-stack](https://github.com/cozy/cozy-stack/blob/master/docs/account_types.md#facebook)):
+
+```
+curl -X PUT 'localhost:5984/secrets%2Fio-cozy-account_types'
+curl -X PUT localhost:5984/secrets%2Fio-cozy-account_types/facebook -d '{ "grant_mode": "authorization_code", "client_id": "<CLIENT_ID>", "client_secret": "<CLIENT_SECRET>", "auth_endpoint": "https://www.facebook.com/v2.3/dialog/oauth", "token_endpoint": "https://graph.facebook.com/2.12/oauth2/access_token" }'
+```
+
+Finally, you'll need to register the correct `redirect_uri` to the [Facebook application page](https://developers.facebook.com/).
+
+```
+http://cozy.tools:8080/accounts/facebook/redirect
+```
+
+Where `cozy.tools:8080` is the url to join the cozy-stack's server.
+
+To debug or try the konnector with a local build, you'll need to update
+the konnector with:
+
+```
+./cozy-stack konnectors update facebook file://$PWD/../cozy-konnector-facebook/build
+```
+
+:warning: If you do not have [nsjail](https://github.com/google/nsjail) installed on your system, you'll
+have to configure the cozy-stack's server to run konnectors directly with nodejs: if you don't already have a config file, create one in `~/.cozy/cozy.yaml` and add the following configuration:
+
+```
+konnectors:
+  cmd: <path_to_your_cozy-stack>/cozy-stack/scripts/konnector-node-run.sh
+```
+
 ### How does the cozy-stack run the connector ?
 
-The cozy-stack runs the connector in a rkt container to be sure it does not affect the environment.
+The cozy-stack runs the connector in a nsjail container to be sure it does not affect the environment.
 
-The connector is run by calling npm start with the following envrionment variables :
+The connector is run by calling yarn start with the following envrionment variables :
 
  - COZY_CREDENTIALS needs to be the result of `cozy-stack instances token-cli <instance name> <scope>`
  - COZY_URL is the full http or https url to your cozy
@@ -77,7 +139,7 @@ The connector is run by calling npm start with the following envrionment variabl
       "arguments":{
         "account":"cf31eaef5d899404a7e8c3737c1c2d1f",
         "folder_to_save":"folderPathId",
-        "slug":"orange"
+        "slug":"mykonnector"
       }
     }
   }
@@ -90,7 +152,7 @@ parameters for your konnector.
 ### Build (without Travis)
 
 To be able to run the connector, the cozy stack needs a connector which is built into only one
-file, without needing to npm install it, this will be a lot faster to install.
+file, without needing to install its dependencies, this will be a lot faster to install.
 
 There is a command in package.json to help you to do that : `yarn build`
 
@@ -100,11 +162,11 @@ This will generate an index.js file in the build directory and add all files the
 
 You can deploy this build by using the specific script : `yarn deploy`
 
-This command will commit and push your built in the branch `build` fo your project.
+This command will commit and push your build in the branch `build` fo your project.
 
 And your konnector can now be installed using the following url :
 
-git://github.com/cozy/cozy-konnector-orange.git#build
+git://github.com/konnectors/cozy-konnector-facebook.git#build
 
 ### Build using Travis CI
 
@@ -126,6 +188,12 @@ Now Travis is ready to build your project, it should build it each time your pus
 
 > __Note:__ Travis will push your build to your `build` branch ONLY for commits made on your master branch (included PR merge commits). You can see the related Travis statement [here](https://github.com/cozy/cozy-konnector-template/blob/master/.travis.yml#L27).
 
+### Add your new connector to [Cozy Collect](https://github.com/cozy/cozy-collect)
+
+The Cozy Collect application will soon use an application store as source of connectors. But for
+now, if you want to add your new connector to Cozy Collect, you can submit a message in the forum
+in the [collect section](https://forum.cozy.io/c/francais/collect-fr), and we will handle this for
+you.
 
 ### Standard
 
@@ -137,9 +205,7 @@ yarn lint
 
 ### Maintainer
 
-The lead maintainer for this konnector is @doubleface for Cozy Cloud. Before,
-it was created by Frank Rousseau, with contributions from Peltoche, and
-nicofrand.
+The lead maintainers for this konnector is <YOUR NAME>
 
 
 ### Get in touch
@@ -155,7 +221,7 @@ You can reach the Cozy Community by:
 License
 -------
 
-Cozy Konnector Orange is developed by Cozy and distributed under the [AGPL v3 license][agpl-3.0].
+<YOUR KONNECTOR NAME> is developed by <your name> and distributed under the [AGPL v3 license][agpl-3.0].
 
 [cozy]: https://cozy.io "Cozy Cloud"
 [agpl-3.0]: https://www.gnu.org/licenses/agpl-3.0.html
@@ -168,3 +234,4 @@ Cozy Konnector Orange is developed by Cozy and distributed under the [AGPL v3 li
 [webpack]: https://webpack.js.org
 [yarn]: https://yarnpkg.com
 [travis]: https://travis-ci.org
+[contribute]: CONTRIBUTING.md

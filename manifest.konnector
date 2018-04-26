@@ -1,22 +1,20 @@
 {
   "version": "1.0.0",
-  "name": "Orange Factures",
+  "name": "Facebook",
   "type": "konnector",
   "language": "node",
-  "icon": "orange.svg",
-  "slug": "orange",
-  "source": "git://github.com/konnectors/cozy-konnector-orange.git#build",
+  "slug": "facebook",
+  "icon": "icon.svg",
+  "source": "git://github.com/konnectors/cozy-konnector-facebook.git",
   "editor": "Cozy",
-  "vendor_link": "https://www.orange.fr/",
-  "categories": ["telecom", "isp"],
-  "screenshots": [],
+  "vendor_link": "https://facebook.com",
+  "categories": ["other"],
+  "data_types": ["pictures"],
+  "oauth": {
+    "account_type": "facebook",
+    "scope": "user_photos"
+  },
   "fields": {
-    "login": {
-      "type": "text"
-    },
-    "password": {
-      "type": "password"
-    },
     "advancedFields": {
       "folderPath": {
         "advanced": true,
@@ -24,42 +22,55 @@
       }
     }
   },
-  "time_interval": [15, 21],
-  "data_types": [
-    "bill"
-  ],
   "permissions": {
-    "bills": {
-      "description": "Required to save the bills data",
-      "type": "io.cozy.bills"
-    },
-    "files": {
-      "description": "Required to save the bills",
-      "type": "io.cozy.files"
+    "albums": {
+      "type": "io.cozy.photos.albums"
     },
     "accounts": {
-      "description": "Required to get the account's data",
-      "type": "io.cozy.accounts",
-      "verbs": ["GET"]
+      "type": "io.cozy.accounts"
     },
-    "bank": {
-      "description": "Required to link bills to a bank operation",
-      "type": "io.cozy.bank.operations"
+    "files": {
+      "type": "io.cozy.files"
     }
   },
-  "developer": {
-    "name": "Cozy Cloud",
-    "url": "https://cozy.io"
-  },
-  "langs": ["fr"],
   "locales": {
     "fr": {
-      "short_description": "Récupérer vos données Orange dans votre Cozy",
-      "long_description": "Ce fournisseur vous permettra de récupérer l'ensemble de vos factures Orange dans votre Cozy."
+      "short_description": "Connecteur Facebook",
+      "long_description": "Ce connecteur récupère les albums photos que vous avez publiés sur facebook.",
+      "permissions": {
+        "books": {
+          "description": "Utilisé pour créer les albums ou sont sauvegardées les photos."
+        },
+        "files": {
+          "description": "Utilisé pour sauvegarder les photos."
+        },
+        "accounts": {
+          "description": "Utilisé pour obtenir les données du compte"
+        }
+      }
     },
     "en": {
-      "short_description": "Fetch your Orange data in your Cozy",
-      "long_description": "This provider will allow you to fetch all your Orange factures in your Cozy."
+      "short_description": "Connector Facebook",
+      "long_description": "This connector retrieves your facebook pictures albums.",
+      "permissions": {
+        "albums": {
+          "description": "Required to create the albums where the photo will be saved",
+          "type": "io.cozy.photos.albums"
+        },
+        "accounts": {
+          "description": "Required to get the account's data",
+          "type": "io.cozy.accounts"
+        },
+        "files": {
+          "description": "Required to save images",
+          "type": "io.cozy.files"
+        }
+      }
     }
+  },
+  "langs": ["fr", "en"],
+  "developer": {
+    "name": "Cozy",
+    "url": "https://cozy.io"
   }
 }
