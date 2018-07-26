@@ -23,6 +23,9 @@ ehthumbs.db
 Thumbs.db
 desktop.ini
 
+# Playground
+/playground.js
+
 # Private user data
 private/*
 
