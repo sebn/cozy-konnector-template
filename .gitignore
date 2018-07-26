@@ -23,6 +23,8 @@ ehthumbs.db
 Thumbs.db
 desktop.ini
 
+# Private user data
+private/*
 
 # Editors / IDEs
 .floo
