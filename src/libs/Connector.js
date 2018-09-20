@@ -39,7 +39,6 @@ class DevConnector {
 
     if (await Playground.isMissing()) {
       await Playground.create()
-      Hint.show('FirstRun')
     }
   }
 
@@ -79,9 +78,8 @@ class DevConnector {
   }
 
   _showHints() {
-    if (this.response) Hint.show('Response', 'Page', 'Cheerio')
-    else if (this._body) Hint.show('Page', 'Cheerio')
-    else if (this._$) Hint.show('Cheerio')
+    if (this.response) Hint.show('PageFetched', 'ScrapingExamples')
+    else if (this._$) Hint.show('CheerioLegacy', 'ScrapingExamples')
   }
 
   clear() {
@@ -102,12 +100,19 @@ class DevConnector {
   }
 
   text() {
-    console.log(this.$.text().replace(/\s\s+/g, '\n')) // eslint-disable-line no-console
+    if (this.$) {
+      console.log(this.$.text().replace(/\s\s+/g, '\n')) // eslint-disable-line no-console
+    } else {
+      Hint.show('NoPage')
+    }
   }
 
   page() {
-    if (this.lastPage) opn(this.lastPage)
-    else console.log("Last step didn't access any page.") // eslint-disable-line no-console
+    if (this.lastPage) {
+      opn(this.lastPage)
+    } else {
+      Hint.show('NoPage')
+    }
   }
 }
 

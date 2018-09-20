@@ -6,13 +6,16 @@ module.exports = {
   isMissing
 }
 
-const filePath = path.join(__dirname, '..', '..', 'playground.js')
+const userFilePath = path.join(__dirname, '..', '..', 'playground.js')
+const templatePath = path.join(__dirname, 'Playground.template.js')
 
 async function create() {
-  await fs.ensureFile(filePath)
+  if (!fs.existsSync(userFilePath)) {
+    fs.copySync(templatePath, userFilePath)
+  }
 }
 
 async function isMissing() {
-  const exists = await fs.exists(filePath)
+  const exists = await fs.exists(userFilePath)
   return !exists
 }
